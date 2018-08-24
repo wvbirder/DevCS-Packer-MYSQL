@@ -1,0 +1,41 @@
+{
+  "builders": [
+    {
+      "user_ocid":"ocid1.user.oc1..aaaaaaaazusfrxnxk3qx3fxxx75ynagfsmtdoorkfffb2hqu6rxnxcfjpcwa",
+      "tenancy_ocid": "ocid1.tenancy.oc1..aaaaaaaaivqvhsl7eb5xm562owq2xsx4whv6bxocgwhpm7xk5sqju7wdnxaa",
+      "fingerprint":"a3:05:00:31:a4:4c:d4:28:a3:55:7f:6d:89:97:2e:5e",
+      "key_file":"oci_api_key.pem",
+      "availability_domain": "YFPL:US-ASHBURN-AD-1",
+      "region": "us-ashburn-1",
+      "base_image_ocid": "ocid1.image.oc1.iad.aaaaaaaa2tq67tvbeavcmioghquci6p3pvqwbneq3vfy7fe7m7geiga4cnxa",
+      "compartment_ocid": "ocid1.compartment.oc1..aaaaaaaaalblsb7j3wcrz7vgdwocmqbsybi6hrwaiyc6oalf5jmp4cmsrcha",
+      "image_name": "DevCS_MYSQL",
+      "shape": "VM.Standard1.1",
+      "ssh_username": "opc",
+      "ssh_password": "welcome1",
+      "subnet_ocid": "ocid1.subnet.oc1.iad.aaaaaaaa6tfe6dmygx5fsdml27bduz5s7csihefhbfmpxhzzimd4hf4ihi5q",
+      "type": "oracle-oci"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sleep 30",
+        "mkdir AlphaOffice",
+        "sudo yum install git -y",
+        "sudo setenforce Permissive",
+        "sudo sed -i.bak s/SELINUX=enforcing/SELINUX=permissive/g /etc/selinux/config",
+        "wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm",
+        "sudo rpm -ivh mysql57-community-release-el7-9.noarch.rpm",
+        "sudo yum install mysql-server -y",
+        "sudo systemctl enable mysqld",
+        "sudo systemctl start mysqld",
+        "git clone https://github.com/wvbirder/DevCS-MYSQL.git",
+        "(cd /home/opc/DevCS-MYSQL; sh setupAlphaMYSQL.sh)",
+        "sudo firewall-cmd --permanent --add-port=3306/tcp",
+        "sudo firewall-cmd --reload"
+      ]
+    }
+  ]
+}
