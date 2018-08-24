@@ -22,7 +22,6 @@
       "type": "shell",
       "inline": [
         "sleep 30",
-        "mkdir AlphaOffice",
         "sudo yum install git -y",
         "sudo setenforce Permissive",
         "sudo sed -i.bak s/SELINUX=enforcing/SELINUX=permissive/g /etc/selinux/config",
